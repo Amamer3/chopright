@@ -1,6 +1,6 @@
-import React, { Suspense, useRef, useState, useEffect } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Environment } from '@react-three/drei';
+import React, { useRef, useState, useEffect, Suspense } from 'react';
+import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import { OrbitControls, Environment, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 
 // 3D Plate with interactive tilt
@@ -72,6 +72,75 @@ const Cherry = ({ position }: { position: [number, number, number] }) => {
   )
 }
 
+// 3D Fried Rice Image with depth effect
+const FriedRice3D = () => {
+  const meshRef = useRef<THREE.Mesh>(null)
+  const groupRef = useRef<THREE.Group>(null)
+  
+  // Load the PNG texture
+  const texture = useTexture('/delicious-homemade-vegetable-fried-rice-removebg-preview.png')
+  
+  useFrame((state) => {
+    if (groupRef.current) {
+      // Floating animation
+      groupRef.current.position.y = 0.8 + Math.sin(state.clock.getElapsedTime() * 0.8) * 0.1
+      // Gentle rotation
+      groupRef.current.rotation.y = Math.sin(state.clock.getElapsedTime() * 0.3) * 0.2
+      groupRef.current.rotation.x = Math.sin(state.clock.getElapsedTime() * 0.4) * 0.05
+    }
+  })
+  
+  return (
+    <group ref={groupRef} position={[0, 0.8, 0]}>
+      {/* Main image plane */}
+      <mesh position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 0]} castShadow>
+        <planeGeometry args={[1.5, 1.5]} />
+        <meshStandardMaterial 
+          map={texture} 
+          transparent 
+          alphaTest={0.1}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+      
+      {/* Depth layers for 3D effect */}
+      <mesh position={[0, -0.05, 0]} rotation={[-Math.PI / 2, 0, 0]} castShadow>
+        <planeGeometry args={[1.45, 1.45]} />
+        <meshStandardMaterial 
+          map={texture} 
+          transparent 
+          alphaTest={0.1}
+          opacity={0.7}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+      
+      <mesh position={[0, -0.1, 0]} rotation={[-Math.PI / 2, 0, 0]} castShadow>
+        <planeGeometry args={[1.4, 1.4]} />
+        <meshStandardMaterial 
+          map={texture} 
+          transparent 
+          alphaTest={0.1}
+          opacity={0.4}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+      
+      {/* Glow effect behind */}
+      <mesh position={[0, -0.15, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[1.8, 1.8]} />
+        <meshStandardMaterial 
+          color="#ffa500" 
+          transparent 
+          opacity={0.2}
+          emissive="#ffa500"
+          emissiveIntensity={0.1}
+        />
+      </mesh>
+    </group>
+  )
+}
+
 // 3D Food Scene
 const FoodScene = ({ tilt }: { tilt: [number, number] }) => {
   return (
@@ -90,6 +159,9 @@ const FoodScene = ({ tilt }: { tilt: [number, number] }) => {
         shadow-camera-top={10}
         shadow-camera-bottom={-10}
       />
+      
+      {/* 3D Fried Rice Image */}
+      <FriedRice3D />
       
       {/* Main plate and food */}
       <Plate tilt={tilt} />

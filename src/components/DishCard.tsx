@@ -1,4 +1,5 @@
 import React from 'react';
+import VegetableFriedRice3D from './VegetableFriedRice3D';
 
 interface DishCardProps {
   id: string;
@@ -22,14 +23,20 @@ const DishCard: React.FC<DishCardProps> = ({
   return (
     <div className="bg-white rounded-3xl shadow-lg p-6 flex flex-col items-center hover:shadow-xl transition-shadow duration-300 group">
       <div className="w-24 h-24 mb-4 relative">
-        <img
-          src={image}
-          alt={`Image of ${name}`}
-          className="w-full h-full rounded-full object-cover shadow-lg"
-          onError={(e) => {
-            e.currentTarget.src = 'https://via.placeholder.com/150';
-          }}
-        />
+        {id === 'vegetable-fried-rice' ? (
+          <div className="w-full h-full rounded-full overflow-hidden shadow-lg bg-gray-50">
+            <VegetableFriedRice3D className="w-full h-full" />
+          </div>
+        ) : (
+          <img
+            src={image}
+            alt={`Image of ${name}`}
+            className="w-full h-full rounded-full object-cover shadow-lg"
+            onError={(e) => {
+              e.currentTarget.src = 'https://via.placeholder.com/150';
+            }}
+          />
+        )}
       </div>
       <h3 className="text-xl font-bold mb-2 text-gray-900">{name}</h3>
       <div className="flex items-center gap-1 mb-3">

@@ -18,6 +18,14 @@ const PopularDishes: React.FC = () => {
 
   const dishes: Dish[] = [
     {
+      id: 'vegetable-fried-rice',
+      name: 'Delicious Vegetable Fried Rice',
+      image: '/delicious-homemade-vegetable-fried-rice.jpg',
+      description: 'A vibrant plate of vegetable fried rice, featuring fluffy rice, scrambled eggs, and colorful veggies.',
+      price: 28.00,
+      rating: 5,
+    },
+    {
       id: 'pasta',
       name: 'Pasta',
       image: 'https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop',
