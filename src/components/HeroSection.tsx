@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, Suspense } from 'react';
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Environment, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -74,7 +74,6 @@ const Cherry = ({ position }: { position: [number, number, number] }) => {
 
 // 3D Fried Rice Image with depth effect
 const FriedRice3D = () => {
-  const meshRef = useRef<THREE.Mesh>(null)
   const groupRef = useRef<THREE.Group>(null)
   
   // Load the PNG texture
